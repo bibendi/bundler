@@ -8,7 +8,7 @@ environment = BundlerVendoredPostIt::PostIt::Environment.new([])
 version = Gem::Requirement.new(environment.bundler_version)
 if version.requirements.size == 1 && version.requirements.first.first == "=" # version.exact?
   if version.requirements.first.last.segments.first >= 2
-    ENV["BUNDLE_TRAMPOLINE_FORCE"] = "true"
+    Bundler::SharedHelpers.set_env "BUNDLE_TRAMPOLINE_FORCE", "true"
   end
 end
 
@@ -58,7 +58,7 @@ The error was: #{e}
     nil
   end
 
-  ENV["BUNDLE_POSTIT_TRAMPOLINING_VERSION"] = installed_version.to_s
+  Bundler::SharedHelpers.set_env "BUNDLE_POSTIT_TRAMPOLINING_VERSION", installed_version.to_s
 
   if !Gem::Requirement.new(">= 1.13.pre".dup).satisfied_by?(Gem::Version.new(running_version)) && (ARGV.empty? || ARGV.any? {|a| %w[install i].include? a })
     puts <<-WARN.strip
